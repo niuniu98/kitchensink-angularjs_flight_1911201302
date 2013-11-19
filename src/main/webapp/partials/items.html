@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!-- This is a partial, and is templated by AngularJS -->
+<div>
+    <h1>Welcome to JBoss!</h1>
+
+    <div>
+        <p>You have successfully deployed a Java EE 6 Enterprise
+            Application.</p>
+        <h3>Your application can run on:</h3>
+        <img src="gfx/dualbrand_as7eap.png" />
+    </div>
+	<!-- MEMBER -->
+	<form id="reg" ng-submit="register()">
+        <h2>Member Registration</h2>
+        <fieldset>
+            <legend>Register a member:</legend>
+            <!-- Each input is bound to a property on the prototype newMember object -->
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name"  ng-model="newMember.name" placeholder="Your Name" required autofocus/>
+                <span class="error" ng-show="errors.name">{{errors.name}}</span>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" ng-model="newMember.email" placeholder="Your Email" required/>
+                <span class="error" ng-show="errors.email">{{errors.email}}</span>
+            </div>
+            <div>
+                <label for="phoneNumber">Phone #:</label>
+                <input type="tel" name="phoneNumber" id="phoneNumber" ng-model="newMember.phoneNumber" pattern="[0-9]{10,12}" placeholder="Your Phone #" required/>
+                <span class="error" ng-show="errors.phoneNumber">{{errors.phoneNumber}}</span>
+            </div>
+            
+            <!-- We output a list of success messages (appropriately styled!) for the form. -->
+            <ul ng-hide="!successMessages" class="success">
+                <li ng-repeat="message in successMessages">{{message}}</li>
+            </ul>
+
+            <!-- Output the list of error messages if any. -->
+            <ul ng-hide="!errorMessages" class="error">
+                <li ng-repeat="message in errorMessages">{{message}}</li>
+            </ul>
+
+            <!-- There are two buttons, the default submit action (which is bound for the whole form), and a reset button, that clears the form. -->
+            <div>
+                <input type="submit" id="register" value="Register" />
+                <input type="button" ng-click="reset()" name="cancel"
+                    id="cancel" value="Cancel" />
+            </div>
+        </fieldset>
+    </form>
+
+	<!-- A list of registered members -->
+    <h2>Members</h2>
+    <!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+    <em ng-show="members.length == 0">No registered members.</em>
+    <table ng-hide="members.length == 0" class="simpletablestyle">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone #</th>
+                <th>Phone #</th>
+            </tr>
+        </thead>
+        <!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+        <tr ng-repeat="member in members | orderBy:orderBy">
+            <td>{{member.id}}</td>
+            <td>{{member.name}}</td>
+            <td>{{member.email}}</td>
+            <td>{{member.phoneNumber}}</td>
+            <td><a href="rest/members/{{member.id}}">/rest/members/{{member.id}}</a>
+            </td>
+    </table>
+    <div>
+        REST URL for all members: <a href="rest/members">/rest/members</a>
+    </div>
+    <div>
+        <!-- The table has a button to manually refresh the values, in case, for example, someone else adds a member -->
+        <input type="button" ng-click="refresh()" name="refresh"
+            id="refresh" value="Refresh" />
+    </div>
+    
+    <!-- FLIGHT -->
+    <form id="reg" ng-submit="registerItem()">
+        <h2>Flight Registration</h2>
+        <fieldset>
+            <legend>Register a flight:</legend>
+            <!-- Each input is bound to a property on the prototype newItem object -->
+            <div>
+                <label for="flight_num">Flight:</label>
+                <input type="text" name="flight_num" id="flight_num"  ng-model="newItem.flight_num" placeholder="Flight" required autofocus/>
+                <span class="error" ng-show="errors.flight_num">{{errors.flight_num}}</span>
+            </div>
+            <div>
+                <label for="seat_num">Seat:</label>
+                <input type="text" name="seat_num" id="seat_num" ng-model="newItem.seat_num" placeholder="Seat Number" required/>
+                <span class="error" ng-show="errors.seat_num">{{errors.seat_num}}</span>
+            </div>
+            <div>
+            	<label for="seat_id">SeatId:</label>
+                <input type="text" name="seat_id" id="seat_id" ng-model="newItem.seat_id"required/>
+                <span class="error" ng-show="errors.seat_id">{{errors.seat_id}}</span>
+            </div>
+            
+            <!-- We output a list of success messages (appropriately styled!) for the form. -->
+            <ul ng-hide="!itemSuccessMessages" class="success">
+                <li ng-repeat="message in itemSuccessMessages">{{message}}</li>
+            </ul>
+
+            <!-- Output the list of error messages if any. -->
+            <ul ng-hide="!itemErrorMessages" class="error">
+                <li ng-repeat="message in itemErrorMessages">{{message}}</li>
+            </ul>
+
+            <!-- There are two buttons, the default submit action (which is bound for the whole form), and a reset button, that clears the form. -->
+            <div>
+                <input type="submit" id="register" value="Register" />
+                <input type="button" ng-click="resetItem()" name="cancel"
+                    id="cancel" value="Cancel" />
+            </div>
+        </fieldset>
+    </form>
+
+    <!-- A list of registered flights -->
+    <h2>Flights</h2>
+    <!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+    <em ng-show="items.length == 0">No registered flights.</em>
+    <table ng-hide="items.length == 0" class="simpletablestyle">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Flight</th>
+                <th>seat</th>
+              <!--    <th>state</th>-->
+            </tr>
+        </thead>
+        <!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+        <tr ng-repeat="item in items | orderBy:orderBy">
+            <td>{{item.id}}</td>
+            <td>{{item.flight_num}}</td>
+            <td>{{item.seat_num}}</td>
+            <!--   <td>{{item.state}}</td>-->
+    </table>
+    <div>
+        REST URL for all members: <a href="rest/items">/rest/items</a>
+    </div>
+    <div>
+        <!-- The table has a button to manually refresh the values, in case, for example, someone else adds a member -->
+        <input type="button" ng-click="refreshItem()" name="refresh"
+            id="refresh" value="Refresh" />
+    </div>
+    
+    <!-- BOOKING -->
+    <form id="reg" ng-submit="registerBooking()">
+        <h2>Flight Booking</h2>
+        <fieldset>
+            <legend>Book a seat:</legend>
+            <!-- Each input is bound to a property on the prototype newMember object -->
+             <div>
+                <label for="name">Name:</label>
+                <select  name = "bookemail"  type= "text"  id="bookemail" ng-model="newBooking.email" placeholder="Your name" required>
+                    <option ng-repeat="member in members | orderBy:orderBy" value = {{member.email}}>{{member.email}}</option>
+                </select>
+				<span class="error" ng-show="errors.email">{{errors.email}}</span>
+            </div>
+
+            <div>
+                <label for="flight">Flight:</label>
+                <select  name = "bookflight"  type= "text"  id="bookflight" ng-model="newBooking.seat_id" placeholder="Your name" required>
+                    <option ng-repeat="item in items | orderBy:orderBy" value = {{item.seat_id}}>{{item.seat_id}}</option>
+                </select>
+				<span class="error" ng-show="errors.seat_id">{{errors.seat_id}}</span>
+            </div>
+            <div>
+                <label for="Date">Date:</label>
+                <input type="date" name="Date" id="Date"  ng-model="newBooking.book_date" placeholder="YourDate" required autofocus/>
+                <span class="error" ng-show="errors.book_date">{{errors.book_date}}</span>
+
+            </div>
+            <!-- We output a list of success messages (appropriately styled!) for the form. -->
+            <ul ng-hide="!successMessages" class="success">
+                <li ng-repeat="message in successMessages">{{message}}</li>
+            </ul>
+
+            <!-- Output the list of error messages if any. -->
+            <ul ng-hide="!errorMessages" class="error">
+                <li ng-repeat="message in errorMessages">{{message}}</li>
+            </ul>
+
+            <!-- There are two buttons, the default submit action (which is bound for the whole form), and a reset button, that clears the form. -->
+            <div>
+                <input type="submit" id="register" value="Register" />
+                <input type="button" ng-click="resetBooking()" name="cancel"
+                    id="cancel" value="Cancel" />
+            </div>
+        </fieldset>
+    </form>
+    <!-- A list of registered bookings -->
+    <h2>Bookings</h2>
+    <!-- If there are no members registered, instead of showing the table, we show a simple message. -->
+    <em ng-show="bookings.length == 0">No registered members.</em>
+    <table ng-hide="bookings.length == 0" class="simpletablestyle">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>seatId</th>
+                <th>email</th>
+                <th>date</th>
+                 <th>delet</th>
+            </tr>
+        </thead>
+        <!-- The table is built using the AngularJS repeat function, iterating over the members variable, and ordering by the property specified in the orderBy variable -->
+        <tr ng-repeat="booking in bookings | orderBy:orderBy">
+            <td>{{booking.id}}</td>
+            <td>{{booking.seat_id}}</td>
+            <td>{{booking.email}}</td>
+            <td>{{booking.book_date}}</td>
+            <td><input type="button" ng-click="remove(booking)" name="delete"
+            id="delete" value="cancle" /></td>
+            </tr>
+    </table>
+    <div>
+        REST URL for all bookings: <a href="rest/bookings">/rest/boo
+        kings</a>
+    </div>
+    <div>
+        <!-- The table has a button to manually refresh the values, in case, for example, someone else adds a member -->
+        <input type="button" ng-click="refreshBooking()" name="refresh"
+            id="refresh" value="Refresh" />
+    </div>
+</div>
